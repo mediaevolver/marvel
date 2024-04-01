@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { fetchCharacters } from './api/api';
 
 const App = () => {
   const [characters, setCharacters] = useState([]);
@@ -26,7 +27,12 @@ const App = () => {
   );
   
   useEffect(() => {
-    // API call
+    const getCharacters = async () => {
+      const charactersFromApi = await fetchCharacters();
+      setCharacters(charactersFromApi);
+    };
+
+    getCharacters();
   }, []);
 
   const handleCharacterSelect = (character) => {
