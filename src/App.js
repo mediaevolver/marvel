@@ -1,54 +1,37 @@
+// App.js or CharacterSelector.js
 import React, { useState, useEffect } from 'react';
-import { fetchCharacters } from './api/api';
+import Autocomplete from './Autocomplete';
+import SelectedCharacters from './SelectedCharacters';
+import { fetchCharacters } from './api/api'; // This function should fetch character data.
 
-const App = () => {
-  const [characters, setCharacters] = useState([]);
-  const [selectedCharacters, setSelectedCharacters] = useState([]);
+const CharacterSelector = () => {
+  const [characters, setCharacters] = useState([]); // This will store character names for the autocomplete.
+  const [selectedCharacters, setSelectedCharacters] = useState([]); // This will store the user's selections.
 
-  const CharacterDisplay = ({ characters, onCharacterSelect }) => (
-    <div className="character-display">
-      {characters.map((character) => (
-        <div key={character.id} onClick={() => onCharacterSelect(character)}>
-          <img src={character.thumbnail} alt={character.name} />
-          <p>{character.name}</p>
-        </div>
-      ))}
-    </div>
-  );
-
-  const SelectedCharacters = ({ selectedCharacters, onRemoveCharacter }) => (
-    <ul className="selected-characters">
-      {selectedCharacters.map((character) => (
-        <li key={character.id}>
-          {character.name} <button onClick={() => onRemoveCharacter(character.id)}>Remove</button>
-        </li>
-      ))}
-    </ul>
-  );
-  
   useEffect(() => {
     const getCharacters = async () => {
-      const charactersFromApi = await fetchCharacters();
-      setCharacters(charactersFromApi);
+      const chars = await fetchCharacters();
+      const characterNames = chars.map((char) => char.name);
+      setCharacters(characterNames);
     };
 
     getCharacters();
   }, []);
 
-  const handleCharacterSelect = (character) => {
+  const handleSelection = (character) => {
     setSelectedCharacters([...selectedCharacters, character]);
   };
 
-  const handleRemoveCharacter = (id) => {
-    setSelectedCharacters(selectedCharacters.filter((character) => character.id !== id));
+  const handleRemoveCharacter = (character) => {
+    setSelectedCharacters(selectedCharacters.filter((char) => char !== character));
   };
 
   return (
-    <div className="app">
-      <CharacterDisplay characters={characters} onCharacterSelect={handleCharacterSelect} />
-      <SelectedCharacters selectedCharacters={selectedCharacters} onRemoveCharacter={handleRemoveCharacter} />
+    <div>
+      <Autocomplete suggestions={characters} onSelection={handleSelection} />
+      <SelectedCharacters selected={selectedCharacters} onRemove={handleRemoveCharacter} />
     </div>
   );
 };
 
-export default App;
+export default CharacterSelector;
