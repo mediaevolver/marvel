@@ -1,8 +1,8 @@
-// App.js or CharacterSelector.js
 import React, { useState, useEffect } from 'react';
 import Autocomplete from './Autocomplete';
 import SelectedCharacters from './SelectedCharacters';
 import { fetchCharacters } from './api/api'; // This function should fetch character data.
+import "./App.css"
 
 const CharacterSelector = () => {
   const [characters, setCharacters] = useState([]); // This will store character names for the autocomplete.

@@ -1,0 +1,53 @@
+.autocomplete {
+    width: 100%;
+    max-width: 300px;
+    margin: auto;
+    position: relative;
+  }
+  
+  .autocomplete input[type="text"] {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .suggestions-list {
+    position: absolute;
+    width: 100%;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    border: 1px solid #ccc;
+    border-top: none;
+    background: #fff;
+    z-index: 1000;
+    list-style-type: none; 
+    margin-top: -1px;
+    padding-left: 0;
+    text-align: center; 
+  }
+  
+  .suggestion-item {
+    padding: 10px;
+    cursor: pointer;
+    border-bottom: 1px solid #ccc;
+  }
+  
+  .suggestion-item:last-child {
+    border-bottom: none;
+  }
+  
+  .suggestion-item:hover {
+    background-color: #f9f9f9;
+  }
+  
+  ul {
+    padding: 0;
+    margin: 0;
+    list-style-type: none;
+  }
+  
+  .addedResults {
+    width: 100%;
+    text-align: center;;
+  }
