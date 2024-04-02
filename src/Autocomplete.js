@@ -6,20 +6,20 @@ const Autocomplete = ({ suggestions = [], onSelection }) => {
   const [userInput, setUserInput] = useState('');
 
   useEffect(() => {
-    const filtered = userInput
-      ? suggestions.filter((suggestion) =>
-          suggestion.toLowerCase().includes(userInput.toLowerCase())
-        )
-      : [];
-    setFilteredSuggestions(filtered);
+    if (userInput) {
+      const filtered = suggestions.filter((suggestion) =>
+        suggestion.toLowerCase().includes(userInput.toLowerCase())
+      );
+      setFilteredSuggestions(filtered);
+    } else {
+      setFilteredSuggestions([]);
+    }
   }, [userInput, suggestions]);
 
   const handleSelection = (suggestion) => {
     setUserInput('');
     setFilteredSuggestions([]);
-    if (onSelection) {
-      onSelection(suggestion);
-    }
+    onSelection && onSelection(suggestion);
   };
 
   return (
@@ -30,15 +30,13 @@ const Autocomplete = ({ suggestions = [], onSelection }) => {
         onChange={(e) => setUserInput(e.target.value)}
         value={userInput}
       />
-      {filteredSuggestions.length > 0 && (
-        <ul className="suggestions-list">
-          {filteredSuggestions.map((suggestion, index) => (
-            <li key={index} onClick={() => handleSelection(suggestion)} className="suggestion-item">
-              {suggestion}
-            </li>
-          ))}
-        </ul>
-      )}
+      <ul className="suggestions-list">
+        {filteredSuggestions.map((suggestion, index) => (
+          <li key={index} onClick={() => handleSelection(suggestion)} className="suggestion-item">
+            {suggestion}
+          </li>
+        ))}
+      </ul>
     </div>
   );
 };
