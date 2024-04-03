@@ -9,15 +9,29 @@ const CharacterSelector = () => {
   const [selectedCharacters, setSelectedCharacters] = useState([]);
 
   useEffect(() => {
+    let isMounted = true;  // Track the mounted status to avoid state update if the component is unmounted
+
     const getCharacters = async () => {
-      const chars = await fetchCharacters();
-      if (Array.isArray(chars)) {
-        const characterNames = chars.map(char => char.name);
-        setCharacters(characterNames);
+      try {
+        const chars = await fetchCharacters();
+        if (Array.isArray(chars) && isMounted) {
+          const characterNames = chars.map(char => char.name);
+          setCharacters(characterNames);
+        }
+      } catch (error) {
+        console.error('Failed to fetch characters:', error);
+        if (isMounted) {
+          setCharacters([]);
+        }
       }
     };
 
     getCharacters();
+
+    // Cleanup function to set isMounted to false when the component unmounts
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   const handleSelection = (character) => {
